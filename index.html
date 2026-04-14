@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Patient Satisfaction Survey</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Patient Satisfaction Survey</h2>
+      <h3>Welcome to the Patient Satisfaction Survey</h3>
+
+      <form id="surveyForm">
+        <label>Patient Name:</label>
+        <input type="text" id="name" />
+        <div id="errName" class="error"></div>
+
+        <label>Department:</label>
+        <select id="department">
+          <option value="">Select Department</option>
+          <option>Emergency</option>
+          <option>Cardiology</option>
+          <option>Neurology</option>
+          <option>Medicine</option>
+        </select>
+        <div id="errDept" class="error"></div>
+
+        <label>Doctor Name:</label>
+        <input type="text" id="doctor" />
+        <div id="errDoctor" class="error"></div>
+
+        <label>Rate Hospital Service:</label>
+        <div class="options">
+          <label
+            ><input
+              type="radio"
+              name="hospitalService"
+              value="Very Satisfied"
+            />
+            Very Satisfied</label
+          >
+          <label
+            ><input type="radio" name="hospitalService" value="Satisfied" />
+            Satisfied</label
+          >
+          <label
+            ><input type="radio" name="hospitalService" value="Not Satisfied" />
+            Not Satisfied</label
+          >
+        </div>
+        <div id="errHospitalService" class="error"></div>
+
+        <label>Rate Medical Facilities:</label>
+        <div class="options">
+          <label
+            ><input
+              type="radio"
+              name="medicalFacilities"
+              value="Very Satisfied"
+            />
+            Very Satisfied</label
+          >
+          <label
+            ><input type="radio" name="medicalFacilities" value="Satisfied" />
+            Satisfied</label
+          >
+          <label
+            ><input
+              type="radio"
+              name="medicalFacilities"
+              value="Not Satisfied"
+            />
+            Not Satisfied</label
+          >
+        </div>
+        <div id="errMedicalFacilities" class="error"></div>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="resetBtn">Reset</button>
+      </form>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

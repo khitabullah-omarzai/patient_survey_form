@@ -1,0 +1,227 @@
+/* ===========================
+   RESET DEFAULT STYLES
+   =========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   BODY
+   =========================== */
+body {
+  font-family: "Open Sans", sans-serif; /* Font for the page */
+  background: linear-gradient(
+    135deg,
+    #0f2027,
+    #203a43,
+    #2c5364
+  ); /* Gradient background */
+  min-height: 100vh; /* Full viewport height */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  padding: 5vw; /* Some space around */
+}
+
+/* ===========================
+   FORM CONTAINER
+   =========================== */
+.container {
+  background: rgba(255, 255, 255, 0.08); /* Semi-transparent background */
+  backdrop-filter: blur(14px); /* Glass effect */
+  border-radius: 20px; /* Rounded corners */
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.3); /* Soft shadow */
+  padding: 2.5rem 2rem; /* Inner spacing */
+  width: 100%; /* Full width until max */
+  max-width: 450px; /* Max width */
+  color: #fff; /* Text color */
+  transition: 0.3s ease; /* Smooth hover effect */
+}
+
+.container:hover {
+  transform: scale(1.02); /* Slight zoom on hover */
+}
+
+/* ===========================
+   FORM HEADING
+   =========================== */
+.container h2 {
+  font-size: clamp(1.5rem, 2vw, 2rem); /* Responsive font size */
+  margin-bottom: 2rem; /* Space below heading */
+  text-align: center; /* Center heading */
+  font-weight: 700; /* Bold text */
+}
+
+/* ===========================
+   LABELS
+   =========================== */
+label {
+  display: block;
+  margin-bottom: 0.6rem; /* Space below label */
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+/* ===========================
+   INPUTS, TEXTAREAS, SELECT
+   =========================== */
+input[type="text"],
+textarea,
+select {
+  width: 100%; /* Full width */
+  padding: 1rem; /* Inner spacing */
+  margin-bottom: 1.2rem; /* Space below input */
+  border-radius: 12px; /* Rounded edges */
+  border: 1px solid rgba(255, 255, 255, 0.25); /* Border color */
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  color: #fff; /* Text color */
+  font-size: 1rem;
+  transition: 0.25s ease;
+  box-sizing: border-box;
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Arrow for select dropdown */
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 20px;
+}
+
+/* ===========================
+   FIX AUTOFILL BACKGROUND (BROWSER)
+   =========================== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset !important; /* Keeps background same */
+  -webkit-text-fill-color: #fff !important; /* Keep text white */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ===========================
+   SELECT DROPDOWN OPTIONS
+   =========================== */
+select option {
+  background-color: rgba(26, 44, 56, 0.95); /* Dark background for dropdown */
+  color: #fff; /* White text */
+  padding: 12px;
+  border: none;
+}
+
+/* ===========================
+   PLACEHOLDER TEXT
+   =========================== */
+input::placeholder,
+select::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* Light gray placeholder */
+}
+
+/* ===========================
+   FOCUS STATE
+   =========================== */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #5eead4; /* Cyan border on focus */
+  box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.3);
+  background: rgba(255, 255, 255, 0.15); /* Slightly brighter */
+}
+
+/* ===========================
+   RADIO BUTTONS
+   =========================== */
+.options {
+  display: flex; /* Horizontal layout */
+  flex-wrap: wrap; /* Wrap if too long */
+  gap: 15px; /* Space between options */
+  margin-bottom: 1.2rem;
+  color: #fff;
+  font-weight: 500;
+}
+
+.options input[type="radio"] {
+  accent-color: #5eead4; /* Colored radio button */
+}
+
+/* ===========================
+   BUTTONS
+   =========================== */
+button {
+  width: 100%; /* Full width */
+  padding: 1rem; /* Inner padding */
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+button[type="submit"] {
+  background: linear-gradient(90deg, #5eead4, #38bdf8);
+  color: #0f172a;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(90deg, #2dd4bf, #0ea5e9);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(16, 172, 132, 0.4);
+}
+
+#resetBtn {
+  background: linear-gradient(90deg, #fca5a5, #f87171);
+  color: #0f172a;
+}
+
+#resetBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(244, 63, 94, 0.4);
+}
+
+/* ===========================
+   ERROR MESSAGES
+   =========================== */
+.error {
+  color: #ff6b6b; /* Red text */
+  font-size: 0.85rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+/* ===========================
+   RESPONSIVE FOR MOBILE
+   =========================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+
+  .options {
+    flex-direction: column; /* Stack radio buttons vertically */
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 0.95rem;
+    padding: 0.85rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.85rem;
+  }
+
+  h2 {
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+  }
+}
