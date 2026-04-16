@@ -13,7 +13,9 @@ app.use(cors());
 
 // Base config using Windows Authentication
 const baseConfig = {
-  server: "OMARZAI", // from your SSMS screenshot
+  server: "OMARZAI",
+  database: "master",
+  driver: "msnodesqlv8",
   options: {
     trustedConnection: true,
     trustServerCertificate: true
@@ -39,10 +41,10 @@ async function initializeDatabase() {
   try {
     console.log("Connecting to SQL Server with Windows Authentication...");
 
-    // connect to master
+    // Connect to master
     const masterPool = await new sql.ConnectionPool(masterConfig).connect();
 
-    // create database if not exists
+    // Create database if it does not exist
     await masterPool.request().query(`
       IF DB_ID(N'${DB_NAME}') IS NULL
       BEGIN
@@ -53,23 +55,36 @@ async function initializeDatabase() {
     console.log(`Database '${DB_NAME}' is ready.`);
     await masterPool.close();
 
-    // connect to created database
+    // Connect to app database
     dbPool = await new sql.ConnectionPool(appDbConfig).connect();
 
-    // create table if not exists
+    // Create table if it does not exist
     await dbPool.request().query(`
       IF OBJECT_ID('dbo.patient_survey', 'U') IS NULL
       BEGIN
         CREATE TABLE dbo.patient_survey (
           id INT IDENTITY(1,1) PRIMARY KEY,
           patient_name NVARCHAR(100) NOT NULL,
+          file_number NVARCHAR(50) NOT NULL,
           department NVARCHAR(100) NOT NULL,
-          doctor_name NVARCHAR(100) NOT NULL,
-          hospital_service NVARCHAR(255) NOT NULL,
-          medical_facilities NVARCHAR(255) NOT NULL,
+          overall_treatment NVARCHAR(30) NOT NULL,
+          medical_facilities NVARCHAR(30) NOT NULL,
+          overall_comments NVARCHAR(500) NULL,
           created_at DATETIME DEFAULT GETDATE()
         )
       END
+    `);
+
+    // Add missing columns if the table already exists from an old version
+    await dbPool.request().query(`
+      IF COL_LENGTH('dbo.patient_survey', 'file_number') IS NULL
+        ALTER TABLE dbo.patient_survey ADD file_number NVARCHAR(50) NULL;
+
+      IF COL_LENGTH('dbo.patient_survey', 'overall_treatment') IS NULL
+        ALTER TABLE dbo.patient_survey ADD overall_treatment NVARCHAR(30) NULL;
+
+      IF COL_LENGTH('dbo.patient_survey', 'overall_comments') IS NULL
+        ALTER TABLE dbo.patient_survey ADD overall_comments NVARCHAR(500) NULL;
     `);
 
     console.log("Table 'patient_survey' is ready.");
@@ -84,44 +99,48 @@ app.post("/submit", async (req, res) => {
   try {
     const {
       patient_name,
+      file_number,
       department,
-      doctor_name,
-      hospital_service,
+      overall_treatment,
       medical_facilities,
+      overall_comments
     } = req.body;
 
     if (
       !patient_name ||
+      !file_number ||
       !department ||
-      !doctor_name ||
-      !hospital_service ||
+      !overall_treatment ||
       !medical_facilities
     ) {
-      return res.status(400).json({ error: "Please fill all fields" });
+      return res.status(400).json({
+        error: "Please complete all required fields."
+      });
     }
 
     await dbPool
       .request()
       .input("patient_name", sql.NVarChar(100), patient_name)
+      .input("file_number", sql.NVarChar(50), file_number)
       .input("department", sql.NVarChar(100), department)
-      .input("doctor_name", sql.NVarChar(100), doctor_name)
-      .input("hospital_service", sql.NVarChar(255), hospital_service)
-      .input("medical_facilities", sql.NVarChar(255), medical_facilities)
+      .input("overall_treatment", sql.NVarChar(30), overall_treatment)
+      .input("medical_facilities", sql.NVarChar(30), medical_facilities)
+      .input("overall_comments", sql.NVarChar(500), overall_comments || null)
       .query(`
         INSERT INTO dbo.patient_survey
-        (patient_name, department, doctor_name, hospital_service, medical_facilities)
+        (patient_name, file_number, department, overall_treatment, medical_facilities, overall_comments)
         VALUES
-        (@patient_name, @department, @doctor_name, @hospital_service, @medical_facilities)
+        (@patient_name, @file_number, @department, @overall_treatment, @medical_facilities, @overall_comments)
       `);
 
-    res.status(201).json({ message: "Form submitted successfully!" });
+    res.status(201).json({ message: "Survey submitted successfully." });
   } catch (error) {
     console.error("Insert error:", error);
-    res.status(500).json({ error: "Database error" });
+    res.status(500).json({ error: "Database error. Please try again." });
   }
 });
 
-// Optional fetch route
+// Fetch all records
 app.get("/patients", async (req, res) => {
   try {
     const result = await dbPool.request().query(`

@@ -29,17 +29,17 @@ form.addEventListener("submit", function (e) {
   }
   if (!doctor_name) {
     document.getElementById("errDoctor").textContent =
-      "Please enter doctor name.";
+      "Please enter a doctor name.";
     errors = true;
   }
   if (!hospital_service) {
     document.getElementById("errHospitalService").textContent =
-      "Please select a hospital service rating.";
+      "Please rate the hospital service.";
     errors = true;
   }
   if (!medical_facilities) {
     document.getElementById("errMedicalFacilities").textContent =
-      "Please select a medical facilities rating.";
+      "Please rate the medical facilities.";
     errors = true;
   }
 
